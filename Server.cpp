@@ -4,7 +4,6 @@
 Server::Server(string address)
 {
 	counter = 0;
-	connections = map<int, SOCKET>();
 
 	WSAData wsaData;
 	WORD DLLVersion = MAKEWORD(2, 1);
@@ -16,6 +15,7 @@ Server::Server(string address)
 	SOCKADDR_IN addr;
 	int sizeofaddr = sizeof(addr);
 	addr.sin_addr.s_addr = inet_addr(address.c_str());
+	addr.sin_addr.s_addr = NULL;
 	addr.sin_port = htons(2020);
 	addr.sin_family = AF_INET;
 
@@ -37,7 +37,6 @@ Server::Server(string address)
 				connections.insert(make_pair(i, buf));
 				thread th([&,this]() {this->clientHandler(i); });
 				th.detach();
-				break;
 			}
 			counter++;
 		}

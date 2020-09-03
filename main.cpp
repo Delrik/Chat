@@ -1,9 +1,10 @@
-#include "Server.h"
+#include "Client.h"
 #include <iostream>
 
 using namespace std;
 
 int main() {
-	Server S("127.0.0.1");
+	Client C("127.0.0.1");
+
 	return 0;
 }

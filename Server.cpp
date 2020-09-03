@@ -37,6 +37,7 @@ Server::Server(string address)
 				connections.insert(make_pair(i, buf));
 				thread th([&,this]() {this->clientHandler(i); });
 				th.detach();
+				break;
 			}
 			counter++;
 		}

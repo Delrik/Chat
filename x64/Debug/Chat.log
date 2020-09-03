@@ -1,5 +1,4 @@
 ﻿  Client.cpp
   main.cpp
   Generating Code...
-main.obj : error LNK2019: unresolved external symbol "public: __cdecl Client::~Client(void)" (??1Client@@QEAA@XZ) referenced in function main
-C:\Users\Dmitriy\source\repos\Chat\x64\Debug\Chat.exe : fatal error LNK1120: 1 unresolved externals
+  Chat.vcxproj -> C:\Users\Dmitriy\source\repos\Chat\x64\Debug\Chat.exe

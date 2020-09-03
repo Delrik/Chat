@@ -1,2 +1,2 @@
-﻿  main.cpp
-  Chat.vcxproj -> C:\Users\Dmitriy\source\repos\Chat\x64\Debug\Chat.exe
+﻿  Server.cpp
+C:\Users\Dmitriy\source\repos\Chat\Server.cpp(38,28): error C3867: 'Server::clientHandler': non-standard syntax; use '&' to create a pointer to member

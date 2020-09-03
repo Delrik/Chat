@@ -32,7 +32,6 @@ Client::Client(string address) {
 
 	SOCKADDR_IN addr;
 	addr.sin_addr.s_addr = inet_addr(address.c_str());
-	addr.sin_addr.s_addr = NULL;
 	addr.sin_port = htons(2020);
 	addr.sin_family = AF_INET;
 	

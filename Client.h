@@ -13,8 +13,9 @@ using namespace std;
 class Client
 {
 private:
-	void recvHandler(SOCKET connection);
-	void sendHandler(SOCKET connection);
+	void recvHandler();
+	void sendHandler();
+	SOCKET connection;
 
 public:
 	Client(string address);

@@ -1,23 +1,22 @@
 #include "Client.h"
 
-void Client::recvHandler(SOCKET connection)
+void Client::recvHandler()
 {
 	char msg[256];
+	memset(msg, '\0', sizeof(msg));
 	while (true) {
 		recv(connection, msg, sizeof(msg), NULL);
 		cout << msg << endl;
-		memset(msg, '\0', 256);
 	}
 }
 
-void Client::sendHandler(SOCKET connection)
+void Client::sendHandler()
 {
 	char msg[256];
 	while (true) {
 		cin.getline(msg, sizeof(msg));
 		if (msg == "0") break;
 		send(connection, msg, sizeof(msg), NULL);
-		memset(msg, '\0', 256);
 	}
 }
 
@@ -36,13 +35,14 @@ Client::Client(string address) {
 	addr.sin_family = AF_INET;
 	
 	
-	SOCKET connection = socket(AF_INET, SOCK_STREAM, NULL);
+	connection = socket(AF_INET, SOCK_STREAM, NULL);
 	if (connect(connection, (sockaddr*)&addr, sizeof(addr)) != 0) {
 		cout << "Error 2" << endl;
 	}
 	else {
-		thread a([&,this]() {this->recvHandler(connection); });
-		sendHandler(connection);
+		thread a([this]() {this->recvHandler(); });
+		a.detach();
+		sendHandler();
 	}
 }
 

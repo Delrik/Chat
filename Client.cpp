@@ -2,25 +2,64 @@
 
 void Client::recvHandler()
 {
+	msgType type = FAILURE;
+	bool check = true;
 	char msg[256];
-	memset(msg, '\0', sizeof(msg));
 	while (true) {
-		recv(connection, msg, sizeof(msg), NULL);
-		cout << msg << endl;
+		recv(connection, (char*)&type, sizeof(msgType), NULL);
+		switch (type)
+		{
+		case MESSAGE:
+			recv(connection, msg, sizeof(msg), NULL);
+			if(readyToRead) cout << msg << endl;
+			break;
+		case CONNECTION:
+			send(connection, (char*)&check, sizeof(bool), NULL);
+			break;
+		default:
+			break;
+		}
 	}
 }
 
 void Client::sendHandler()
 {
+	char option[2];
+	msgType type = FAILURE;
 	char msg[256];
 	while (true) {
-		cin.getline(msg, sizeof(msg));
-		if (msg == "0") break;
-		send(connection, msg, sizeof(msg), NULL);
+		cout << "Choose the option:\n1. Start chatting\n";
+		cin.getline(option, sizeof(option));
+		cin.clear();
+		system("cls");
+		switch (option[0])
+		{
+		case '1':
+			cout << "Input 0 to go back\n";
+			readyToRead = true;
+			while (true) {
+				cin.getline(msg, sizeof(msg));
+				cin.clear();
+				if (strcmp(msg, "0")==0)
+				{
+					readyToRead = false;
+					system("cls");
+					break;
+				}
+				type = MESSAGE;
+				send(connection, (char*)&type, sizeof(msgType), NULL);
+				send(connection, msg, sizeof(msg), NULL);
+			}
+			break;
+		default:
+			break;
+		}
+		
 	}
 }
 
 Client::Client(string address) {
+	readyToRead = false;
 	
 	WSAData wsaData;
 	WORD DLLVersion = MAKEWORD(2, 1);

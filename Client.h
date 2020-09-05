@@ -1,7 +1,7 @@
 #pragma once
-#define _WINSOCK_DEPRECATED_NO_WARNINGS
-#include "Server.h"
 #pragma comment(lib, "Ws2_32.lib")
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
+#include "enums.h"
 #include <WinSock2.h>
 #include <iostream>
 #include <string>
@@ -13,12 +13,11 @@ using namespace std;
 class Client
 {
 private:
+	bool readyToRead;
+	SOCKET connection;
 	void recvHandler();
 	void sendHandler();
-	SOCKET connection;
-
 public:
 	Client(string address);
 	~Client();
-
 };

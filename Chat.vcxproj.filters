@@ -8,6 +8,7 @@
   <ItemGroup>
     <ClInclude Include="Client.h" />
     <ClInclude Include="Server.h" />
+    <ClInclude Include="enums.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />

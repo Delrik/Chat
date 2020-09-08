@@ -5,20 +5,32 @@
 using namespace std;
 
 int main() {
-	int choice;
+	char choice[2];
 	while (true) {
-		cout << "1. I wanna be a server\n2. I wanna be a client\n";
-		cin >> choice;
+		cout << "1. I wanna be a server\n2. I wanna be a client\n3. I wanna be a server(with specific IP)\n4. I wanna be a client(with specific IP)\n";
+		cin.getline(choice, sizeof(choice));
 		system("cls");
-		if (choice == 1) {
+		if (choice[0] == '1') {
 			Server S("127.0.0.1");
-			break;
+			return 0;
 		}
-		if (choice == 2) {
+		if (choice[0] == '2') {
 			Client C("127.0.0.1");
-			break;
+			return 0;
+		}
+		if (choice[0] == '3') {
+			char ip[20];
+			cout << "IP: ";
+			cin.getline(ip, sizeof(ip));
+			Server S(ip);
+			return 0;
+		}
+		if (choice[0] == '4') {
+			char ip[20];
+			cout << "IP: ";
+			cin.getline(ip, sizeof(ip));
+			Client C(ip);
+			return 0;
 		}
 	}
-	system("pause");
-	return 0;
 }

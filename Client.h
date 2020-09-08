@@ -7,6 +7,8 @@
 #include <string>
 #include <map>
 #include <thread>
+#include <mutex>
+#include <conio.h>
 
 using namespace std;
 
@@ -14,7 +16,11 @@ class Client
 {
 private:
 	bool readyToRead;
+	bool authenticated;
+	bool boolBuf;
+	string username;
 	SOCKET connection;
+	recursive_mutex mut;
 	void recvHandler();
 	void sendHandler();
 public:

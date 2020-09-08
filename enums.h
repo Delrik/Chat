@@ -3,5 +3,7 @@
 enum msgType {
 	FAILURE,
 	MESSAGE,
-	CONNECTION
+	CONNECTION,
+	REGISTER,
+	AUTH
 };

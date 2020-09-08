@@ -1,0 +1,7 @@
+﻿  Client.cpp
+  main.cpp
+  Server.cpp
+Server.obj : error LNK2001: unresolved external symbol _mysql_real_connect@32
+Server.obj : error LNK2001: unresolved external symbol _mysql_init@4
+Server.obj : error LNK2001: unresolved external symbol _mysql_error@4
+C:\Users\Dmitriy\source\repos\Chat\Release\Chat.exe : fatal error LNK1120: 3 unresolved externals

@@ -1,0 +1,2 @@
+C:\Users\Dmitriy\source\repos\Chat\x64\Debug\Chat.exe
+C:\Users\Dmitriy\source\repos\Chat\x64\Debug\Chat.pdb

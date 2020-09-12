@@ -119,7 +119,10 @@ void Client::sendHandler()
 			send(connection, msg, sizeof(msg), NULL);
 			send(connection, (char*)&pass, sizeof(pass), NULL);
 			boolBuf = false;
-			while (!boolBuf);
+			for (int i = 1; i > 0; i++) {
+				if (boolBuf) break;
+			}
+			this_thread::sleep_for(2s);
 			if (authenticated) {
 				cout << "Successfuly logged in\n";
 			}

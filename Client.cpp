@@ -29,12 +29,12 @@ void Client::recvHandler()
 		case AUTH:
 			recv(connection, (char*)&response, sizeof(bool), NULL);
 			authenticated = response;
-			boolBuf = true;
+			this->boolBuf = true;
 			break;
 		case REGISTER:
 			recv(connection, (char*)&response, sizeof(bool), NULL);
 			authenticated = response;
-			boolBuf = true;
+			this->boolBuf = true;
 			break;
 		default:
 			break;
@@ -119,10 +119,12 @@ void Client::sendHandler()
 			send(connection, msg, sizeof(msg), NULL);
 			send(connection, (char*)&pass, sizeof(pass), NULL);
 			boolBuf = false;
-			for (int i = 1; i > 0; i++) {
-				if (boolBuf) break;
-			}
 			this_thread::sleep_for(2s);
+			if (!boolBuf) {
+				cout << "Error 3\n";
+				system("pause");
+				exit(1);
+			}
 			if (authenticated) {
 				cout << "Successfuly logged in\n";
 			}
@@ -151,7 +153,12 @@ void Client::sendHandler()
 			send(connection, (char*)&msg, sizeof(msg), NULL);
 			send(connection, (char*)&pass, sizeof(size_t), NULL);
 			boolBuf = false;
-			while (!boolBuf);
+			this_thread::sleep_for(2s);
+			if (!boolBuf) {
+				cout << "Error 3\n";
+				system("pause");
+				exit(1);
+			}
 			if (authenticated) {
 				cout << "Successfuly created an account and logged in\n";
 			}
@@ -189,7 +196,7 @@ Client::Client(string address) {
 	WSAData wsaData;
 	WORD DLLVersion = MAKEWORD(2, 1);
 	if (WSAStartup(DLLVersion, &wsaData) != 0) {
-		cout << "Errror" << endl;
+		cout << "Error" << endl;
 		exit(1);
 	}
 

@@ -39,15 +39,6 @@ Server::Server(string address)
 		buf = accept(sListen, (sockaddr*)&addr, &sizeofaddr);
 		if (counter < 256) {
 			for (int i = 0; i < 256; i++) {
-				/*if (i == 255 && connections.find(i) != connections.end()) {
-					type = MESSAGE;
-					strcpy(msg, "Server is full");
-					send(buf, (char*)&type, sizeof(msgType), NULL);
-					send(buf, (char*)&msg, sizeof(msg), NULL);
-					closesocket(buf);
-					counter--;
-					break;
-				}*/
 				if (connections.find(i) != connections.end()) continue;
 				connections.insert(make_pair(i, buf));
 				thread th([&, this]() {this->clientHandler(i); });
@@ -140,7 +131,7 @@ void Server::clientHandler(int index)
 			result = mysql_store_result(connection);
 			row = mysql_fetch_row(result);
 			if (row == NULL) {
-				query = "INSERT INTO Users(username,password) VALUES('" + buf + "'," + to_string(pass) + ");";
+				query = "INSERT INTO Users(username,password) VALUES('" + buf + "','" + to_string(pass) + "');";
 				query_state = mysql_query(connection, query.c_str());
 				if (query_state != 0) {
 					send(connections[index], (char*)&response, sizeof(bool), 0);

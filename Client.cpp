@@ -44,7 +44,7 @@ void Client::recvHandler()
 
 void Client::sendHandler()
 {
-	char option[2];
+	char option[256];
 	int key;
 	bool response;
 	size_t pass;
@@ -54,9 +54,10 @@ void Client::sendHandler()
 		system("cls");
 		cout << "Choose the option:\n1. Start chatting\n2. Sign in\n3. Sign up\n4. Sing out\n5. Quit\nOption: ";
 		cin.getline(option, sizeof(option));
+		char c_buf = option[0];
 		cin.clear();
 		system("cls");
-		switch (option[0])
+		switch (c_buf)
 		{
 		case '1':
 			if (!authenticated) {
@@ -73,10 +74,15 @@ void Client::sendHandler()
 				}
 				mut.lock();
 				system("cls");
-				cout << "Input 0 to go back\n";
-				cout << username << ": ";
-				cin.getline(msg, sizeof(msg));
-				cin.clear();
+				while (true) {
+					cout << "Input 0 to go back\n";
+					cout << username << ": ";
+					cin.getline(msg, sizeof(msg));
+					cin.clear();
+					if (msgIsValid(string(msg), "'\\%_")) break;
+					system("cls");
+					cout << "Message cannot contain ', %, _ or \\ symbol\n";
+				}
 				if (strcmp(msg, "0") == 0)
 				{
 					mut.unlock();
@@ -98,11 +104,16 @@ void Client::sendHandler()
 				break;
 			}
 			type = AUTH;
-			cout << "Sign in form\nLogin: ";
-			cin.getline(msg, sizeof(msg));
-			username = string(msg);
-			cout << "Password: ";
-			cin.getline(msg1, sizeof(msg1));
+			while (true) {
+				cout << "Sign in form\nLogin: ";
+				cin.getline(msg, sizeof(msg));
+				username = string(msg);
+				cout << "Password: ";
+				cin.getline(msg1, sizeof(msg1));
+				if (msgIsValid(string(msg), "'\\%_") && msgIsValid(string(msg1), "'\\%_")) break;
+				system("cls");
+				cout << "Login and password cannot contain ', %, _ or \\ symbol\n";
+			}
 			pass = hash<std::string>{}(string(msg1));
 			send(connection, (char*)&type, sizeof(msgType), NULL);
 			send(connection, msg, sizeof(msg), NULL);
@@ -117,11 +128,16 @@ void Client::sendHandler()
 			break;
 		case '3':
 			type = REGISTER;
-			cout << "Sign in form\nLogin: ";
-			cin.getline(msg, sizeof(msg));
-			username = string(msg);
-			cout << "Password: ";
-			cin.getline(msg1, sizeof(msg1));
+			while (true) {
+				cout << "Sign up form\nLogin: ";
+				cin.getline(msg, sizeof(msg));
+				username = string(msg);
+				cout << "Password: ";
+				cin.getline(msg1, sizeof(msg1));
+				if (msgIsValid(string(msg), "'\\%_") && msgIsValid(string(msg1), "'\\%_")) break;
+				system("cls");
+				cout << "Login and password cannot contain ', %, _ or \\ symbol\n";
+			}
 			pass = hash<std::string>{}(string(msg1));
 			send(connection, (char*)&type, sizeof(msgType), NULL);
 			send(connection, (char*)&msg, sizeof(msg), NULL);
@@ -148,6 +164,14 @@ void Client::sendHandler()
 		}
 		
 	}
+}
+
+bool Client::msgIsValid(string msg, string invalidChars)
+{
+	for (char c : invalidChars) {
+		if (msg.find(c) != string::npos) return false;
+	}
+	return true;
 }
 
 Client::Client(string address) {

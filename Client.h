@@ -23,6 +23,7 @@ private:
 	recursive_mutex mut;
 	void recvHandler();
 	void sendHandler();
+	bool msgIsValid(string msg, string invalidChars);
 public:
 	Client(string address);
 	~Client();

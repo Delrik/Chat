@@ -127,6 +127,11 @@ void Client::sendHandler()
 			system("pause");
 			break;
 		case '3':
+			if (authenticated) {
+				cout << "You're already logged in\n";
+				system("pause");
+				break;
+			}
 			type = REGISTER;
 			while (true) {
 				cout << "Sign up form\nLogin: ";

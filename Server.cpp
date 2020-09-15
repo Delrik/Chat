@@ -1,10 +1,9 @@
 #include "Server.h"
 
 
-Server::Server(string address)
+Server::Server(string address, string mysqlLogin, string mysqlPassword)
 {
 	counter = 0;
-
 	WSAData wsaData;
 	WORD DLLVersion = MAKEWORD(2, 1);
 	if (WSAStartup(DLLVersion, &wsaData) != 0) {
@@ -13,7 +12,7 @@ Server::Server(string address)
 	}
 	mysql_init(&mysql);
 	connection = mysql_real_connect(&mysql, address.c_str(),
-		"root", "toor", "chat_db", 3306, 0, 0);
+		mysqlLogin.c_str(), mysqlPassword.c_str(), "chat_db", 3306, 0, 0);
 	if (connection == NULL) {
 		cout << "Error 3 : (" << mysql_error(&mysql) << ")" << endl;
 		exit(1);

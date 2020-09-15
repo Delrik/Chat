@@ -18,14 +18,14 @@ private:
 	MYSQL_RES* result;
 	MYSQL_ROW row;
 	int queryState;
+	string mysqlLogin, mysqlPassword;
 
 	int counter;
 	map<int, SOCKET> connections;
 	map<int, string> usernames;
-	bool closeConnection(int index);
 	void clientHandler(int index);
 	bool checkConnection(int index);
 public:
-	Server(string address);
+	Server(string address, string mysqlLogin = "root", string mysqlPassword = "toor");
 	~Server();
 };

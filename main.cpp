@@ -22,7 +22,7 @@ int main() {
 			char ip[20];
 			cout << "IP: ";
 			cin.getline(ip, sizeof(ip));
-			Server S(ip);
+			Server S(ip, "root", "toor");
 			return 0;
 		}
 		if (choice[0] == '4') {

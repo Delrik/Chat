@@ -1,2 +1,3 @@
-﻿  main.cpp
+﻿  Client.cpp
+C:\Users\Dmitriy\source\repos\Chat\Client.cpp(57,7): warning C4101: 'response': unreferenced local variable
   Chat.vcxproj -> C:\Users\Dmitriy\source\repos\Chat\x64\Debug\Chat.exe

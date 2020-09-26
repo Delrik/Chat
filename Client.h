@@ -9,7 +9,7 @@
 #include <thread>
 #include <mutex>
 #include <conio.h>
-
+#include <condition_variable>
 using namespace std;
 
 class Client
@@ -21,6 +21,8 @@ private:
 	string username;
 	SOCKET connection;
 	recursive_mutex mut;
+	mutex boolBufMutex;
+	condition_variable cond;
 	void recvHandler();
 	void sendHandler();
 	bool msgIsValid(string msg, string invalidChars);

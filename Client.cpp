@@ -6,6 +6,8 @@ void Client::recvHandler()
 	bool check = true;
 	char msg[256];
 	bool response;
+	unique_lock<mutex> locker(boolBufMutex);
+	locker.unlock();
 	bool counter = false;
 	while (true) {
 		type = FAILURE;
@@ -29,12 +31,18 @@ void Client::recvHandler()
 		case AUTH:
 			recv(connection, (char*)&response, sizeof(bool), NULL);
 			authenticated = response;
+			locker.lock();
 			this->boolBuf = true;
+			locker.unlock();
+			cond.notify_one();
 			break;
 		case REGISTER:
 			recv(connection, (char*)&response, sizeof(bool), NULL);
 			authenticated = response;
+			locker.lock();
 			this->boolBuf = true;
+			locker.unlock();
+			cond.notify_one();
 			break;
 		default:
 			break;
@@ -50,6 +58,8 @@ void Client::sendHandler()
 	size_t pass;
 	msgType type = FAILURE;
 	char msg[256], msg1[256];
+	unique_lock<mutex> locker(boolBufMutex);
+	locker.unlock();
 	while (true) {
 		system("cls");
 		cout << "Choose the option:\n1. Start chatting\n2. Sign in\n3. Sign up\n4. Sing out\n5. Quit\nOption: ";
@@ -118,13 +128,10 @@ void Client::sendHandler()
 			send(connection, (char*)&type, sizeof(msgType), NULL);
 			send(connection, msg, sizeof(msg), NULL);
 			send(connection, (char*)&pass, sizeof(pass), NULL);
+			locker.lock();
+			cond.wait(locker, [=]() {return boolBuf; });
 			boolBuf = false;
-			this_thread::sleep_for(2s);
-			if (!boolBuf) {
-				cout << "Error 3\n";
-				system("pause");
-				exit(1);
-			}
+			locker.unlock();
 			if (authenticated) {
 				cout << "Successfuly logged in\n";
 			}
@@ -152,13 +159,10 @@ void Client::sendHandler()
 			send(connection, (char*)&type, sizeof(msgType), NULL);
 			send(connection, (char*)&msg, sizeof(msg), NULL);
 			send(connection, (char*)&pass, sizeof(size_t), NULL);
+			locker.lock();
+			cond.wait(locker, [=]() {return boolBuf; });
 			boolBuf = false;
-			this_thread::sleep_for(2s);
-			if (!boolBuf) {
-				cout << "Error 3\n";
-				system("pause");
-				exit(1);
-			}
+			locker.unlock();
 			if (authenticated) {
 				cout << "Successfuly created an account and logged in\n";
 			}
